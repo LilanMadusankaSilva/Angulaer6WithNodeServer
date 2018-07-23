@@ -462,7 +462,7 @@ var BookEditComponent = /** @class */ (function () {
     };
     BookEditComponent.prototype.onFormSubmit = function (form) {
         var _this = this;
-        this.api.updateBook(this.id)
+        this.api.updateBook(this.id, form)
             .subscribe(function (res) {
             var id = res['_id'];
             _this.router.navigate(['/book-details', id]);
@@ -709,8 +709,9 @@ var ApiService = /** @class */ (function () {
         return this.http.post(apiUrl, data, httpOptions)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(this.handleError));
     };
-    ApiService.prototype.updateBook = function (data) {
-        return this.http.put(apiUrl, data, httpOptions)
+    ApiService.prototype.updateBook = function (id, data) {
+        var url = apiUrl + "/" + id;
+        return this.http.put(url, data, httpOptions)
             .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["catchError"])(this.handleError));
     };
     ApiService.prototype.deleteBook = function (id) {
