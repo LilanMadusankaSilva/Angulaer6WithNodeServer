@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import { Url } from "./../constants/url";
 import { BookController } from "../controllers/book-controller";
 
-export class Routes {
+export class BookRoutes {
 
     public bookController: BookController = new BookController();
     url: string = `${Url.BaseUrl}book/`;

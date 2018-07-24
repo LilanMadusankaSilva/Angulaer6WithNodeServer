@@ -1,13 +1,10 @@
-import { Request, Response } from "express";
-import { Url } from "./../constants/url";
+
+import { BookRoutes } from "./book-routes";
 
 export class Routes {
+    public routeBook: BookRoutes = new BookRoutes();
+
     public routes(app: any): void {
-        app.route(`${Url.BaseUrl}`)
-        .get((req: Request, res: Response) => {
-            res.status(200).send({
-                message: "GET request successfulll!!!!"
-            });
-        });
+        this.routeBook.routes(app);
     }
 }

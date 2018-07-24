@@ -2,7 +2,7 @@
 import * as express from "express";
 import * as mongoose from "mongoose";
 import * as bodyParser from "body-parser";
-import { Routes } from "./routes/book-routes";
+import { Routes } from "./routes/routes";
 import { Url } from "./constants/url";
 
 class App {
