@@ -5,7 +5,7 @@ import { BookController } from "../controllers/book-controller";
 export class BookRoutes {
 
     public bookController: BookController = new BookController();
-    url: string = `${Url.BaseUrl}book/`;
+    url: string = `${Url.BaseUrl}books/`;
 
     public routes(app: any): void {
 
