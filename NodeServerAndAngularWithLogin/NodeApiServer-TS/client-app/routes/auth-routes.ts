@@ -9,10 +9,10 @@ export class AuthRoutes {
 
     public routes(app: any): void {
         // users
+        // book
         app.route(this.url)
-        .post((req: Request, res: Response) => {
-            const tt: number = 10;
-        });
+        // gET endpoint
+        .get(this.authController.getUsers);
 
         // user signup
         app.route(`${this.url}signup`)
@@ -26,9 +26,11 @@ export class AuthRoutes {
 
         // user detail
         app.route(`${this.url}:id`)
+        // get user
+        .get(this.authController.getUser)
         // update spesific user
-        .put(this.authController.updateUser.bind(this.authController))
+        .put(this.authController.updateUser)
         // delete spesific user
-        .delete(this.authController.deleteUser.bind(this.authController));
+        .delete(this.authController.deleteUser);
     }
 }

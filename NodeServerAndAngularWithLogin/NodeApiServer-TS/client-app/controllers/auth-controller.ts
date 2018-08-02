@@ -5,7 +5,7 @@ import * as moment from "moment";
 import { Strategy, ExtractJwt } from "passport-jwt";
 import { General } from "./../config/common";
 import { model as User, IUser } from "../models/user-model";
-import { resolve } from "url";
+import { Request, Response } from "express";
 
 export class AuthController {
 
@@ -68,21 +68,39 @@ export class AuthController {
     }
 
     public getUsers (req: Request, res: Response): void {
-        // const common: Common = new Common();
-        // const token: any = common.getToken(req.headers);
+        User.find({}, (err, user) => {
+            if(err) {
+                res.send(err);
+            }
+            res.json(user);
+        });
+    }
 
-        // if (!token) {
-        //     res.status(403).send({success: false, msg: "Unauthorized."});
-        // }
-        const tt: number = 10;
+    public getUser (req: Request, res: Response): void {
+        User.findById(req.params.id, (err, user) => {
+            if(err) {
+                res.send(err);
+            }
+            res.json(user);
+        });
     }
 
     public updateUser (req: Request, res: Response): void {
-        const tt: number = 10;
+        User.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, user) => {
+            if(err) {
+                res.send(err);
+            }
+            res.json(user);
+        });
     }
 
     public deleteUser (req: Request, res: Response): void {
-        const tt: number = 10;
+        User.remove({ _id: req.params.id }, (err, user) => {
+            if(err) {
+                res.send(err);
+            }
+            res.json({ message: "Successfully deleted user!"});
+        });
     }
 
     private genToken(user: IUser): Object {
