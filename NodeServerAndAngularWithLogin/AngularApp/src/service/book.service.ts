@@ -1,20 +1,10 @@
 import { Injectable } from "@angular/core";
 import { Observable, of, throwError } from "rxjs";
-import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
-import { catchError, tap, map } from "rxjs/operators";
-import { Setting } from "./../config/config";
+import { HttpClient, HttpErrorResponse } from "@angular/common/http";
+import { catchError, map } from "rxjs/operators";
+import { Setting, Config } from "./../config/config";
 
 const apiUrl = `${Setting.WebApiUrl}books`;
-
-import * as SessionStorage from "./../config/session-storage";
-const httpOptions = {
-  headers: new HttpHeaders({
-    "Content-Type" : "application/json",
-    // "Cache-Control": "no-cache",
-    // tslint:disable-next-line:max-line-length
-    "Authorization": "JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJleHAiOjE1MzMyODk4NDgsInVzZXJuYW1lIjoibGlsYW4ifQ.wWrYT2mCsMXcVz3HiGnOAhYojJuVKhrFfirCr-VO32Q"
-  })
-};
 
 @Injectable({
   providedIn: "root"
@@ -45,20 +35,20 @@ export class BookService {
   }
 
   getBooks(): Observable<any> {
-    return this.http.get(apiUrl, httpOptions).pipe(
+    return this.http.get(apiUrl, Config.getHttpHeaders()).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
   getBook(id: string): Observable<any> {
     const url = `${apiUrl}/${id}`;
-    return this.http.get(url, httpOptions).pipe(
+    return this.http.get(url, Config.getHttpHeaders()).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
   postBook(data): Observable<any> {
-    return this.http.post(apiUrl, data, httpOptions)
+    return this.http.post(apiUrl, data, Config.getHttpHeaders())
       .pipe(
         catchError(this.handleError)
       );
@@ -66,7 +56,7 @@ export class BookService {
 
   updateBook(id, data): Observable<any> {
     const url = `${apiUrl}/${id}`;
-    return this.http.put(url, data, httpOptions)
+    return this.http.put(url, data, Config.getHttpHeaders())
       .pipe(
         catchError(this.handleError)
       );
@@ -74,7 +64,7 @@ export class BookService {
 
   deleteBook(id: string): Observable<{}> {
     const url = `${apiUrl}/${id}`;
-    return this.http.delete(url, httpOptions)
+    return this.http.delete(url, Config.getHttpHeaders())
       .pipe(
         catchError(this.handleError)
       );

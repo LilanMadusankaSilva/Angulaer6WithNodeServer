@@ -3,22 +3,9 @@ import { Injectable } from "@angular/core";
 import { Observable, of, throwError } from "rxjs";
 import { HttpClient, HttpHeaders, HttpErrorResponse } from "@angular/common/http";
 import { catchError, tap, map } from "rxjs/operators";
-import { Setting } from "./../config/config";
+import { Setting, Config } from "./../config/config";
 
 const apiUrl = `${Setting.WebApiUrl}users`;
-
-import * as SessionStorage from "./../config/session-storage";
-const httpOptions = {
-  headers: new HttpHeaders({
-    "Content-Type": "application/json",
-    // "Authorization": SessionStorage.default.getToken()
-  })
-};
-const httpOptionsSignin = {
-  headers: new HttpHeaders({
-    "Content-Type": "application/json"
-  })
-};
 
 @Injectable({
   providedIn: "root"
@@ -49,34 +36,34 @@ export class UserService {
   }
 
   signupUser(data): Observable<any> {
-    return this.http.post(`${apiUrl}/signup`, data, httpOptions)
+    return this.http.post(`${apiUrl}/signup`, data, Config.getHttpHeaders())
       .pipe(
         catchError(this.handleError)
       );
   }
 
   signinUser(data): Observable<any> {
-    return this.http.post(`${apiUrl}/signin`, data, httpOptionsSignin)
+    return this.http.post(`${apiUrl}/signin`, data, Config.getHttpHeaders())
       .pipe(
         catchError(this.handleError)
       );
   }
 
   getUsers(): Observable<any> {
-    return this.http.get(apiUrl, httpOptions).pipe(
+    return this.http.get(apiUrl, Config.getHttpHeaders()).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
   getUser(id: string): Observable<any> {
     const url = `${apiUrl}/${id}`;
-    return this.http.get(url, httpOptions).pipe(
+    return this.http.get(url, Config.getHttpHeaders()).pipe(
       map(this.extractData),
       catchError(this.handleError));
   }
 
   postUser(data): Observable<any> {
-    return this.http.post(apiUrl, data, httpOptions)
+    return this.http.post(apiUrl, data, Config.getHttpHeaders())
       .pipe(
         catchError(this.handleError)
       );
@@ -84,7 +71,7 @@ export class UserService {
 
   updateUser(id, data): Observable<any> {
     const url = `${apiUrl}/${id}`;
-    return this.http.put(url, data, httpOptions)
+    return this.http.put(url, data, Config.getHttpHeaders())
       .pipe(
         catchError(this.handleError)
       );
@@ -92,7 +79,7 @@ export class UserService {
 
   deleteUser(id: string): Observable<{}> {
     const url = `${apiUrl}/${id}`;
-    return this.http.delete(url, httpOptions)
+    return this.http.delete(url, Config.getHttpHeaders())
       .pipe(
         catchError(this.handleError)
       );
