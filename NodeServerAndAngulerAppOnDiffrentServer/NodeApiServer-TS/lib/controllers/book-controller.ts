@@ -37,7 +37,7 @@ export class BookController {
 
     public updateBook (req: Request, res: Response): void {
         Book.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true }, (err, book) => {
-            if(err){
+            if(err) {
                 res.send(err);
             }
             res.json(book);
@@ -46,7 +46,7 @@ export class BookController {
 
     public deleteBook (req: Request, res: Response): void {
         Book.remove({ _id: req.params.id }, (err, book) => {
-            if(err){
+            if(err) {
                 res.send(err);
             }
             res.json({ message: "Successfully deleted book!"});
