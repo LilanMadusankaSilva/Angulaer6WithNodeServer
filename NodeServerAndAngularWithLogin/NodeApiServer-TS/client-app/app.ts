@@ -43,7 +43,7 @@ class App {
             res.header("Access-Control-Allow-Origin", Url.CrossOriginUrl);
 
             if(req.method.toUpperCase() === "OPTIONS") {
-                res.header("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE, HEAD, PATCH");
+                res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
                 res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,x-access-token,Content-Type,Authorization");
                 res.status(204).send();
                 return;
