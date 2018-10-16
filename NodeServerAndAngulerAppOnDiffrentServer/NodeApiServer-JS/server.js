@@ -1,6 +1,6 @@
 
 const express = require('express');
-var argv = require('minimist')(process.argv.slice(2));
+const argv = require('minimist')(process.argv.slice(2));
 const bodyParser = require('body-parser');
 
 // Configuring the database
@@ -10,7 +10,7 @@ mongoose.Promise = global.Promise;
 
 // create express app
 const app = express();
-var subpath = express();
+const subpath = express();
 
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));

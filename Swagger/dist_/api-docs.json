@@ -1,0 +1,234 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "Sample swagger implementaion, you can use the api key `special-key` to test the authorization filters.",
+    "version": "1.0.0",
+    "title": "Node web api descriptor",
+    "termsOfService": "http://swagger.io/terms/"
+  },
+  "host": "localhost:3000",
+  "basePath": "",
+  "tags": [
+    {
+      "name": "Operator",
+      "description": "API for Operator"
+    },
+    {
+      "name": "Book",
+      "description": "API for somBookething"
+    }
+  ],
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/api/books": {
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Returns the status of something",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "response",
+            "schema": {
+              "$ref": "#/definitions/response1"
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Book"
+        ],
+        "description": "what this API does",
+        "operationId": "for the URL",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Job Parameters",
+            "in": "body",
+            "description": "Job to add to the database",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/book"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "create response",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Book"
+        ],
+        "description": "what this API does",
+        "operationId": "for the URL",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "Job Parameters",
+            "in": "body",
+            "description": "Job to add to the database",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/create"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "create response",
+            "schema": {
+              "$ref": "#/definitions/response"
+            }
+          }
+        }
+      }
+    },
+    "/api/books/{id}": {
+      "delete": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Deletes a something",
+        "operationId": "delete",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "someVariable",
+            "in": "path",
+            "description": "ID to delete",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "delete response",
+            "schema": {
+              "$ref": "#/definitions/deleteRes"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Book"
+        ],
+        "description": "Returns the status of something",
+        "operationId": "findById",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "description": "ID to fetch",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "response",
+            "schema": {
+              "$ref": "#/definitions/response1"
+            }
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "petstore_auth": {
+      "type": "oauth2",
+      "authorizationUrl": "https://petstore.swagger.io/oauth/dialog",
+      "flow": "implicit",
+      "scopes": {
+        "write:pets": "modify pets in your account",
+        "read:pets": "read your pets"
+      }
+    },
+    "api_key": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
+    }
+  },
+  "definitions": {
+    "book": {
+      "type": "object",
+      "properties": {
+        "isbn": {
+          "required": true,
+          "type": "string",
+          "example": "5ba2693060e17129a0aec493"
+        },
+        "title": {
+          "required": true,
+          "type": "string",
+          "example": "Mr"
+        },
+        "author": {
+          "required": true,
+          "type": "string",
+          "example": "Lilan Silva"
+        },
+        "description": {
+          "required": true,
+          "type": "string",
+          "example": "How to be a developer"
+        },
+        "published_year": {
+          "required": true,
+          "type": "string",
+          "example": "2018"
+        },
+        "publisher": {
+          "required": true,
+          "type": "string",
+          "example": "Lm Solution printers"
+        },
+        "updated_date": {
+          "required": true,
+          "type": "string",
+          "format": "date-time",
+          "example": "2018-09-19"
+        }
+      }
+    },
+    "Response": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "type": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

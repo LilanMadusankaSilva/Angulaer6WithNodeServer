@@ -10,15 +10,18 @@ import * as appStatus from "./config/appstatus";
 
 const session: any = require("express-session");
 const expressValidator: any = require("express-validator");
+const argv = require("minimist")(process.argv.slice(2));
 
 class App {
 
     public app: express.Application;
+    public subpath: express.Application;
     public routePrv: Routes = new Routes();
     private auth: AuthController = new AuthController();
 
     constructor() {
         this.app = express();
+        this.subpath = express();
 
         this.config();
 
@@ -38,11 +41,59 @@ class App {
         // support application/x-www-form-urlencoded post data
         this.app.use(bodyParser.urlencoded({ extended: false }));
 
+        // swagger *******************************
+        this.app.use("/v1", this.subpath);
+        var swagger = require('swagger-node-express').createNew(this.subpath);
+        this.app.use(express.static('dist'));
+        swagger.setApiInfo({
+            title: "example API",
+            description: "API to do something, manage something...",
+            termsOfServiceUrl: "",
+            contact: "lilans@lm.com",
+            license: "",
+            licenseUrl: ""
+        });
+
+        // serve swagger html
+        this.app.get('/', function (req, res) {
+            res.sendFile(__dirname + '/dist/index.html');
+        });
+
+        // Set api-doc path
+        swagger.configureSwaggerPaths('', 'api-docs', '');
+
+        // Configure the API domain
+        var domain = 'localhost';
+        if (argv.domain !== undefined)
+            domain = argv.domain;
+        else
+            console.log('No --domain=xxx specified, taking default hostname "localhost".')
+
+        // Configure the API port
+        var port = 3000;
+        if (argv.port !== undefined)
+            port = argv.port;
+        else
+            console.log('No --port=xxx specified, taking default port ' + port + '.')
+
+        // Set and display the application URL
+        var applicationUrl = 'http://' + domain + ':' + port;
+        console.log('snapJob API running on ' + applicationUrl);
+
+
+        swagger.configure(applicationUrl, '1.0.0');
+        // ********************************
+
         // allow cros orgin for angular app
         this.app.use((req, res, next) => {
-            res.header("Access-Control-Allow-Origin", Url.CrossOriginUrl);
+            var allowedOrigins = ["http://localhost:3000", Url.CrossOriginUrl];
+            var origin = req.headers.origin;
+            if (allowedOrigins.indexOf(<any>origin) > -1) {
+                res.setHeader('Access-Control-Allow-Origin', origin);
+            }
+            //res.header("Access-Control-Allow-Origin", Url.CrossOriginUrl);
 
-            if(req.method.toUpperCase() === "OPTIONS") {
+            if (req.method.toUpperCase() === "OPTIONS") {
                 res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
                 res.header("Access-Control-Allow-Headers", "Origin,X-Requested-With,x-access-token,Content-Type,Authorization");
                 res.status(204).send();
